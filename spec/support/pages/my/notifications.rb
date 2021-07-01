@@ -26,45 +26,13 @@
 # See docs/COPYRIGHT.rdoc for more details.
 #++
 
-module Notifications
-  class CreateContract < ::ModelContract
-    CHANNELS = %i[ian mail mail_digest].freeze
+require 'support/pages/notifications/settings'
 
-    attribute :recipient
-    attribute :subject
-    attribute :reason_ian
-    attribute :reason_mail
-    attribute :reason_mail_digest
-    attribute :project
-    attribute :actor
-    attribute :resource
-    attribute :journal
-    attribute :resource_type
-    attribute :read_ian
-    attribute :read_mail
-    attribute :read_mail_digest
-
-    validate :validate_recipient_present
-    validate :validate_reason_present
-    validate :validate_channels
-
-    def validate_recipient_present
-      errors.add(:recipient, :blank) if model.recipient.blank?
-    end
-
-    def validate_reason_present
-      CHANNELS.each do |channel|
-        errors.add(:"reason_#{channel}", :no_notification_reason) if model.send(:"read_#{channel}") == false && model.send(:"reason_#{channel}").nil?
-      end
-    end
-
-    def validate_channels
-      if CHANNELS.map { |channel| model.send(:"read_#{channel}") }.compact.empty?
-        errors.add(:base, :at_least_one_channel)
-      end
-
-      CHANNELS.each do |channel|
-        errors.add(:"read_#{channel}", :read_on_creation) if model.send(:"read_#{channel}")
+module Pages
+  module My
+    class Notifications < ::Pages::Notifications::Settings
+      def path
+        my_notifications_path
       end
     end
   end

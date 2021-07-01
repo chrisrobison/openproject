@@ -4,8 +4,6 @@ shared_examples 'notification settings workflow' do
     let!(:role) { FactoryBot.create :role, permissions: %i[view_project] }
     let!(:member) { FactoryBot.create :member, user: user, project: project, roles: [role] }
 
-    let(:settings_page) { ::Pages::Notifications::Settings.new(user) }
-
     it 'allows to control notification settings' do
       # Expect default settings
       settings_page.expect_represented
