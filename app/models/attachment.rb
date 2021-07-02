@@ -268,11 +268,6 @@ class Attachment < ApplicationRecord
     # We need to do it like this because `file` is an uploader which expects a File (not a string)
     # to upload usually. But in this case the data has already been uploaded and we just point to it.
     a[:file] = pending_direct_upload_filename(file_name)
-
-    a.save!
-    a.reload # necessary so that the fog file uploader path is correct
-
-    a
   end
 
   class << self
