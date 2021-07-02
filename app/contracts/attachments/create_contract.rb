@@ -39,6 +39,8 @@ module Attachments
     attribute :container
     attribute :author
 
+    validates :filename, presence: true
+
     validate :validate_attachments_addable
     validate :validate_container_addable
     validate :validate_author
